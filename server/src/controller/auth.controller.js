@@ -1,36 +1,78 @@
+import { config } from "../config/config.js";
+import User from "../models/user.model.js";
+import jwt from "jsonwebtoken";
 
+export const signup = async (req, res) => {
+    const { email, password, fullName } = req.body;
+    try {
 
+        if (!email || !password || !fullName) {
+            return res.status(400).json({ message: "all field are required" });
+        }
 
-export const signup = () => {
+        if (password.length < 6) {
+            return res.status(400).json({ message: "Password must be a at least 6 characters" });
+        }
+
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        if (!emailRegex.test(email)) {
+            return res.status(400).json({ message: "Invalid email formate" });
+        }
+
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already exist, please use a different one" })
+        }
+
+        const profilePicUrl = `https://robohash.org/${encodeURIComponent(email)}`;
+
+        const newUser = await User.create({
+            email,
+            fullName,
+            password,
+            profilePic: profilePicUrl,
+        });
+
+        const token = jwt.sign({ userId: newUser._id }, config.JWT_SECRETS, {
+            expiresIn: "7d"
+        });
+
+        res.cookie("jwt", token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true,
+            sameSite: "strict",
+            secure: config.NODE_ENV === "production"
+        });
+
+        res.status(201).json({ success: true, user: newUser });
+    } catch (error) {
+        console.log("Error in signup controller", error);
+        res.status(500).json({ message: "Internal Server Error" });
+    }
+};
+
+export const login = async () => {
 
     try {
 
     } catch (error) {
 
     }
-}
+};
 
-export const login = () => {
-
+export const me = async () => {
     try {
 
     } catch (error) {
 
     }
-}
+};
 
-export const me = () => {
+export const logout = async () => {
     try {
 
     } catch (error) {
 
     }
-}
-
-export const logout = () => {
-    try {
-
-    } catch (error) {
-
-    }
-}
+};
