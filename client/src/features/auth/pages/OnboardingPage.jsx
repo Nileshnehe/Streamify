@@ -137,7 +137,7 @@ const OnboardingPage = () => {
               {/* LEARNING LANGUAGE */}
               <div className='form-control'>
                 <label className="label">
-                  <span className="label-text">Learning Language</span>
+                  <span className="label-text ">Learning Language</span>
                 </label>
                 <select
                   name="learningLanguage"

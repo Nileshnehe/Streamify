@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { ShipWheelIcon } from "lucide-react"
 import { Link } from "react-router"
 import callImg from "../../../../public/call.png"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { API } from '../../../services/api'
-import { signup } from '../../services/api'
+import useSignup from '../../../hook/useSignup'
+
 
 const Signup = () => {
   const [signupData, setSignupData] = useState({
@@ -13,12 +12,10 @@ const Signup = () => {
     password: ""
   });
 
-  const queryClient = useQueryClient()
 
-  const { mutate: signupMutation, isPending, error } = useMutation({
-    mutationFn: signup,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
-  });
+  const { isPending, error, signupMutation
+    
+   } = useSignup();
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -28,7 +25,7 @@ const Signup = () => {
     <div
       autoComplete="off"
       className='h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 '
-      data-theme="dark"
+      data-theme="forest"
     >
       <div className='border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden'>
         {/* SIGNUP FORM - LEFT SIDE */}
@@ -69,7 +66,7 @@ const Signup = () => {
                     <input
                       type="text"
                       placeholder="Nilesh Nehe"
-                      className="input input-bordered w-full"
+                      className="input input-bordered w-full focus:outline-none focus:border-primary "
                       value={signupData.fullName}
                       autoComplete="off"
                       onChange={(e) => setSignupData({ ...signupData, fullName: e.target.value })}
@@ -83,11 +80,11 @@ const Signup = () => {
                       <span className="label-text">Email</span>
                     </label>
                     <input
-                      type="text"
+                      type="email"
                       placeholder="nilesh@gmail.com"
-                      className="input input-bordered w-full"
+                      autocomplete="off"
+                      className="input input-bordered w-full focus:outline-none focus:border-primary"
                       value={signupData.email}
-                      autoComplete="off"
                       onChange={(e) => setSignupData({ ...signupData, email: e.target.value })}
                       required
                     />
@@ -101,9 +98,9 @@ const Signup = () => {
                     <input
                       type="password"
                       placeholder="********"
-                      className="input input-bordered w-full"
+                      autocomplete="new-password"
+                      className="input input-bordered w-full focus:outline-none focus:border-primary"
                       value={signupData.password}
-                      autoComplete="off"
                       onChange={(e) => setSignupData({ ...signupData, password: e.target.value })}
                       required
                     />
