@@ -7,6 +7,11 @@ export const signup = async (signupData) => {
 }
 
 export const getAuthUser = async () => {
-      const res = await API.get("/auth/me");
-      return res.data;
-    }
+    const res = await API.get("/auth/me");
+    return res.data;
+}
+
+export const completeOnboarding = async (userData) => {
+    const res = await API.post("/auth/onboarding", userData);
+    return res.data;
+}    
