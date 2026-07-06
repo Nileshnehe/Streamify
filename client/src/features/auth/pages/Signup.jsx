@@ -14,8 +14,8 @@ const Signup = () => {
 
 
   const { isPending, error, signupMutation
-    
-   } = useSignup();
+
+  } = useSignup();
 
   const handleSignup = (e) => {
     e.preventDefault();
@@ -25,7 +25,6 @@ const Signup = () => {
     <div
       autoComplete="off"
       className='h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 '
-      data-theme="forest"
     >
       <div className='border border-primary/25 flex flex-col lg:flex-row w-full max-w-5xl mx-auto bg-base-100 rounded-xl shadow-lg overflow-hidden'>
         {/* SIGNUP FORM - LEFT SIDE */}
