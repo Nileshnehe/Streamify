@@ -4,7 +4,7 @@ import { getStreamToken } from "../controller/chat.controller.js";
 
 const chatRoute = Router();
 
-chatRoute.post("/token", protectRoute, getStreamToken);
+chatRoute.get("/token", protectRoute, getStreamToken);
 
 
 export default chatRoute;

@@ -25,7 +25,7 @@ const App = () => {
   if (isLoading) return <PageLoader />
   return (
 
-    <div className=' h-screen' data-theme={theme}>
+    <div className='min-h-screen' data-theme={theme}>
 
       <Routes>
         <Route path='/'
@@ -64,11 +64,18 @@ const App = () => {
           path='/chat/:id'
           element={isAuthenticated ? <ChatPage /> : <Navigate to='/login' />}
         />
-
+        
         <Route
-          path='/call/:id'
-          element={isAuthenticated ? <CallPage /> : <Navigate to='/login' />}
+          path="/call/:id"
+          element={
+            isAuthenticated && isOnboarded ? (
+              <CallPage />
+            ) : (
+              <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
+            )
+          }
         />
+
 
         <Route
           path='/notifications'
@@ -77,7 +84,7 @@ const App = () => {
               <NotificationPage />
             </Layout>
           ) : (
-            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"}/>
+            <Navigate to={!isAuthenticated ? "/login" : "/onboarding"} />
           )}
         />
       </Routes>

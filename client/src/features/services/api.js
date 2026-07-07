@@ -60,3 +60,8 @@ export async function acceptFriendRequest(requestId) {
   const response = await API.put(`/users/friend-request/${requestId}/accept`);
   return response.data;
 }
+
+export async function getStreamToken() {
+    const response =await API.get("/chat/token");
+    return response.data;
+}
