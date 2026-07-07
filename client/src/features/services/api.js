@@ -51,3 +51,12 @@ export async function sendFriendRequest(userId) {
   return response.data;
 }
 
+export async function getFriendRequests() {
+  const response = await API.get("/users/friend-requests");
+  return response.data;
+}
+
+export async function acceptFriendRequest(requestId) {
+  const response = await API.put(`/users/friend-request/${requestId}/accept`);
+  return response.data;
+}

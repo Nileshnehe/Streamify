@@ -29,17 +29,34 @@ const HomePage = () => {
 
   const { mutate: sendRequestMutation, isPending } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendRequest"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendRequests"] }),
   });
+
+  // useEffect(() => {
+  //   const outgoingIds = new Set();
+  //   if (outgoingFriendRequests && outgoingFriendRequests.length > 0) {
+  //     outgoingFriendRequests.forEach((req) => {
+  //       outgoingIds.add(req.recipient._id);
+  //     });
+  //     setOutgoingRequestsIds(outgoingIds);  
+  //   }
+  // }, [outgoingFriendRequests]);
 
   useEffect(() => {
     const outgoingIds = new Set();
-    if (outgoingFriendRequests && outgoingFriendRequests.length > 0) {
+    
+    if (Array.isArray(outgoingFriendRequests)) {
       outgoingFriendRequests.forEach((req) => {
-        outgoingIds.add(req.recipient._id);
+        // FIX: Used optional chaining (?.) and .toString() to safely match MongoDB ObjectIds
+        const recipientId = req.recipient?._id || req.recipient;
+        if (recipientId) {
+          outgoingIds.add(recipientId.toString());
+        }
       });
-      setOutgoingRequestsIds(outgoingIds);
     }
+    
+    // FIX: Moved state update outside the 'if' block to ensure it resets when there are 0 requests
+    setOutgoingRequestsIds(outgoingIds);
   }, [outgoingFriendRequests]);
 
   return (
