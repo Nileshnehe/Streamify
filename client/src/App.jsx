@@ -71,7 +71,7 @@ const App = () => {
         />
 
         <Route
-          path='/notification'
+          path='/notifications'
           element={isAuthenticated ? <NotificationPage /> : <Navigate to='/login' />}
         />
       </Routes>

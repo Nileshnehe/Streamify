@@ -18,8 +18,8 @@ export const logout = async () => {
 
 export const getAuthUser = async () => {
     try {
-        const res = await API.get("/auth/me");
-        return res.data;
+        const response = await API.get("/auth/me");
+        return response.data;
     } catch (error) {
         console.log("Error in getAuthUser:", error);
         return null;
@@ -29,4 +29,25 @@ export const getAuthUser = async () => {
 export const completeOnboarding = async (userData) => {
     const res = await API.post("/auth/onboarding", userData);
     return res.data;
-}    
+}
+
+export const getUserFriends = async () => {
+    const response = await API.get("/users/friends");
+    return response.data;
+}
+
+export const getRecommendedUsers = async () => {
+    const response = await API.get("/users");
+    return response.data;
+}
+
+export async function getOutgoingFriendRequest() {
+  const response = await API.get("/users/outgoing-friend-requests");
+  return response.data;
+}
+
+export async function sendFriendRequest(userId) {
+  const response = await API.post(`/users/friend-request/${userId}`);
+  return response.data;
+}
+
