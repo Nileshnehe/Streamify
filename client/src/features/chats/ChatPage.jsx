@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { useParams } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import {
@@ -31,39 +31,34 @@ const ChatPage = () => {
     enabled: !!authUser,
   });
 
-  // useCreateChatClient handles connectUser + disconnectUser cleanup automatically
+  // 👇 memoize userData so its reference only changes when authUser actually changes
+  const userData = useMemo(() => ({
+    id: authUser?._id,
+    name: authUser?.fullName,
+    image: authUser?.profilePic,
+  }), [authUser?._id, authUser?.fullName, authUser?.profilePic]);
+
   const chatClient = useCreateChatClient({
     apiKey: STREAM_API_KEY,
-    userData: {
-      id: authUser?._id,
-      name: authUser?.fullName,
-      image: authUser?.profilePic,
-    },
+    userData,
     tokenOrProvider: tokenData?.token,
   });
 
   React.useEffect(() => {
     const initChannel = async () => {
       if (!chatClient || !authUser || !targetUserId) return;
-
       try {
-        // you and me
-        // if i start the chat => channelId: [myId, yourId]
-        // if you start the chat => channelId: [yourId, myId]  => sorted so it's always the same
         const channelId = [authUser._id, targetUserId].sort().join("-");
-
         const currChannel = chatClient.channel("messaging", channelId, {
           members: [authUser._id, targetUserId],
         });
-
-        await currChannel.watch();
+        await currChannel.watch({ presence: true });
         setChannel(currChannel);
       } catch (error) {
         console.error("Error initializing channel:", error);
         toast.error("Could not connect to chat. Please try again.");
       }
     };
-
     initChannel();
   }, [chatClient, authUser, targetUserId]);
 
