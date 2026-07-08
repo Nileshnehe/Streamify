@@ -22,6 +22,7 @@
     "run": "^1.5.0",
     "stream-chat": "^9.50.0",
     "stream-chat-react": "^14.7.0",
+    "streamify": "file:..",
     "tailwindcss": "^4.3.2",
     "zustand": "^5.0.14"
   },
