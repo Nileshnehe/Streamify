@@ -7,7 +7,7 @@ const useLogin = () => {
 
     const { mutate, isPending, error } = useMutation({
         mutationFn: login,
-        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["useAuthUser"] })
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] })
     });
 
     return {error, isPending, loginMutation: mutate};

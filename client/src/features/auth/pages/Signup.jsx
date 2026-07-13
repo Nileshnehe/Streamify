@@ -120,7 +120,7 @@ const Signup = () => {
                   </div>
                 </div>
 
-                <button className="btn btn-primary w-full" type="submit disabled={isPending}">
+                <button className="btn btn-primary w-full" type="submit" disabled={isPending}>
                   {isPending ? (
                     <>
                       <span className='loading loading-spinner loading-xs'></span>
